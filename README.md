@@ -3,6 +3,8 @@
 
 You are responsible for creating pokedex app.
 
+- https://pokeapi.co is the api-source.
+- You can check the similar project -> https://github.com/skydoves/Pokedex
 - There should be two pages.
 - Home page is responsible for listing all pokemons.
 - Details page, where it is routed from Home, is responsible for details of the pokemon.
