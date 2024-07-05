@@ -1,7 +1,6 @@
-
-
 <template>
-  <header class="bg-red-500 text-white p-4 flex justify-between items-center">
+
+<header class="bg-red-500 text-white p-4 flex justify-between items-center">
     <h1 class="text-2xl font-bold">Pokedex</h1>
     <a href="#" class="text-white hover:underline">Login</a>
 </header>
@@ -19,12 +18,9 @@
 </template>
 
 <script>
-
   export default {
     data (){
-
       return {
-
         list: []
       }
     },
@@ -32,15 +28,9 @@
    async created(){
 
       const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=10&offset=0')
-
       const res = await response.json()
-
       this.list = res.results
-
-
-
-    }
-    
+    }    
   }
 </script>
 
