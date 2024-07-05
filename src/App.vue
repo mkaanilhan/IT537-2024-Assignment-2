@@ -1,85 +1,49 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
+
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <header class="bg-red-500 text-white p-4 flex justify-between items-center">
+    <h1 class="text-2xl font-bold">Pokedex</h1>
+    <a href="#" class="text-white hover:underline">Login</a>
+</header>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+<main class="p-4">
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 gap-4" >
+      <div class="bg-white rounded-lg shadow p-4" v-for="item in list">
+          <img src="https://via.placeholder.com/150" alt="Image 1" class="rounded-t-lg w-full">
+          <p class="text-center mt-2">{{item.name}}</p>
+      </div>
+   
+      <!-- Daha fazla kart ekleyebilirsiniz -->
+  </div>
+</main>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
+<script>
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
+  export default {
+    data (){
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
+      return {
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
+        list: []
+      }
+    },
 
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
+   async created(){
 
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
+      const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=10&offset=0')
 
-nav a:first-of-type {
-  border: 0;
-}
+      const res = await response.json()
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+      this.list = res.results
+
+
+
+    }
+    
   }
+</script>
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
+<style lang="scss" scoped>
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
 </style>
