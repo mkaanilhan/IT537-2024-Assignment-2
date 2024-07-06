@@ -6,7 +6,7 @@
     <template v-else>
       <h1 class="text-5xl font-bold mb-6 text-center capitalize">{{ pokemon.name }}</h1>
       <div class="flex justify-center mb-6">
-        <img :src="pokemon.sprites.front_default" :alt="pokemon.name" class="w-64 h-64 rounded-full border-4 border-white shadow-lg">
+        <img :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${pokemon.id}.svg`" :alt="pokemon.name" class="w-64 h-64">
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div v-for="(detail, key) in pokemonDetails" :key="key" class="bg-white text-gray-800 p-6 rounded-md shadow-md">

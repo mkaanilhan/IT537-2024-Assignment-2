@@ -3,7 +3,7 @@
     <div v-for="pokemon in pokemons" :key="pokemon.id" class="pokemon-card bg-gray-100 p-4 rounded-md shadow-md">
       <router-link :to="`/pokemon/${pokemon.id}`">
         <h2 class="text-xl font-semibold capitalize">{{ pokemon.name }}</h2>
-        <img :src="pokemon.imageUrl" :alt="pokemon.name" class="mt-2">
+        <img :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${pokemon.id}.svg`" :alt="pokemon.name" class="mt-2">
       </router-link>
     </div>
   </div>
@@ -21,7 +21,7 @@ onMounted(async () => {
     pokemons.value = response.data.results.map((pokemon, index) => ({
       id: index + 1,
       name: pokemon.name,
-      imageUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index + 1}.png`
+      imageUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${index + 1}.svg`
     }));
   } catch (error) {
     console.error('Error fetching pokemons:', error);
