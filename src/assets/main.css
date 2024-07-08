@@ -1,0 +1,9 @@
+@import './tailwind.css';
+
+/* Global styles and custom CSS that's not related to Tailwind can go here */
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+/* Add any other global styles you want */
