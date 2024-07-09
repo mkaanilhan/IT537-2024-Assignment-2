@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
 import logo from "./assets/pngegg.png";
+import "./assets/main.css";
 import "./index.css";
 </script>
 
