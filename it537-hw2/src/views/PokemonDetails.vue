@@ -1,48 +1,22 @@
 <template>
-  <div class="pokemon-details bg-gray-800 text-white min-h-screen p-6 rounded-lg shadow-md mx-auto" style="max-width: 800px;">
+  <div class="pokemon-details bg-gray-800 text-white min-h-screen p-6 rounded-lg shadow-md mx-auto max-w-4xl">
     <template v-if="isLoading">
       <p class="text-center text-xl font-semibold">Loading...</p>
     </template>
     <template v-else>
       <div class="flex flex-col md:flex-row md:items-center">
         <div class="flex-shrink-0">
-          <img :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`" :alt="pokemon.name" class="w-64 h-64 mx-auto md:mx-0">
+          <img :src="pokemon.imageUrl" :alt="pokemon.name" class="w-64 h-64 mx-auto md:mx-0">
         </div>
         <div class="mt-4 md:mt-0 md:ml-6">
           <h1 class="text-5xl font-bold mb-4 capitalize">{{ pokemon.name }}</h1>
           <p class="text-lg">{{ getFlavorText(pokemon.species.flavor_text_entries) }}</p>
         </div>
       </div>
-      <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="bg-blue-500 p-4 rounded-lg shadow-md text-black">
-          <h2 class="text-xl font-bold">Height</h2>
-          <p>{{ (pokemon.height / 10).toFixed(1) }} m</p>
-        </div>
-        <div class="bg-blue-500 p-4 rounded-lg shadow-md text-black">
-          <h2 class="text-xl font-bold">Weight</h2>
-          <p>{{ (pokemon.weight / 10).toFixed(1) }} kg</p>
-        </div>
-        <div class="bg-green-500 p-4 rounded-lg shadow-md text-black">
-          <h2 class="text-xl font-bold">Category</h2>
-          <p>{{ getCategory(pokemon.species.genera) }}</p>
-        </div>
-        <div class="bg-green-500 p-4 rounded-lg shadow-md text-black">
-          <h2 class="text-xl font-bold">Abilities</h2>
-          <p>{{ pokemon.abilities.map(a => a.ability.name).join(', ') }}</p>
-        </div>
-        <div class="bg-purple-500 p-4 rounded-lg shadow-md text-black">
-          <h2 class="text-xl font-bold">Types</h2>
-          <p>{{ pokemon.types.map(t => t.type.name).join(', ') }}</p>
-        </div>
-        <div class="bg-purple-500 p-4 rounded-lg shadow-md text-black">
-          <h2 class="text-xl font-bold">Base Experience</h2>
-          <p>{{ pokemon.base_experience }}</p>
-        </div>
-        <div class="bg-yellow-500 p-4 rounded-lg shadow-md text-black">
-          <h2 class="text-xl font-bold">Stats</h2>
-          <canvas id="statsChart"></canvas>
-        </div>
-      </div>
+      <BaseStatistics :pokemon="pokemon" />
+      <SpecialAttacks :pokemon="pokemon" />
+      <Weaknesses :pokemon="pokemon" />
+      <Evolutions :pokemon="pokemon" />
       <div class="mt-6">
         <button @click="goHome" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 transition">Back to Home</button>
       </div>
@@ -51,20 +25,26 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
-import { Chart, registerables } from 'chart.js';
-
-Chart.register(...registerables);
+import { ref, onMounted, nextTick, watch } from 'vue';
+import HeaderInformation from '@/components/HeaderInformation.vue';
+import BaseStatistics from '@/components/BaseStatistics.vue';
+import SpecialAttacks from '@/components/SpecialAttacks.vue';
+import Weaknesses from '@/components/Weaknesses.vue';
+import Evolutions from '@/components/Evolutions.vue';
 
 export default {
   data() {
     return {
       pokemon: null,
       isLoading: true,
+      evolutionChain: null,
     };
   },
   async created() {
     await this.fetchPokemon();
+  },
+  watch: {
+    '$route.params.name': 'fetchPokemon'
   },
   methods: {
     async fetchPokemon() {
@@ -75,8 +55,16 @@ export default {
         const speciesResponse = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${name}`);
         const pokemonData = await pokemonResponse.json();
         const speciesData = await speciesResponse.json();
-        this.pokemon = { ...pokemonData, species: speciesData };
-        this.$nextTick(() => {
+        this.pokemon = { ...pokemonData, species: speciesData, imageUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonData.id}.png` };
+
+        // Fetch evolution chain
+        const evolutionChainResponse = await fetch(speciesData.evolution_chain.url);
+        const evolutionChainData = await evolutionChainResponse.json();
+        this.evolutionChain = evolutionChainData;
+        this.pokemon.previous_evolution = await this.getPreviousEvolutions(evolutionChainData.chain, pokemonData.name);
+        this.pokemon.next_evolution = await this.getNextEvolutions(evolutionChainData.chain, pokemonData.name);
+
+        nextTick(() => {
           this.createChart();
         });
       } catch (error) {
@@ -86,18 +74,11 @@ export default {
       }
     },
     goHome() {
-      this.$router.push('/');
+      this.$router.push({ name: 'Home' });
     },
     getFlavorText(entries) {
       const entry = entries.find(entry => entry.language.name === 'en');
       return entry ? entry.flavor_text : 'No description available.';
-    },
-    getCategory(genera) {
-      const genus = genera.find(genus => genus.language.name === 'en');
-      return genus ? genus.genus : 'Unknown';
-    },
-    capitalize(str) {
-      return str.charAt(0).toUpperCase() + str.slice(1);
     },
     createChart() {
       const ctx = document.getElementById('statsChart').getContext('2d');
@@ -122,7 +103,51 @@ export default {
         },
       });
     },
+    capitalize(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    },
+    async getPreviousEvolutions(chain, name) {
+      const evolutions = [];
+      let current = chain;
+      while (current && current.species.name !== name) {
+        const speciesResponse = await fetch(current.species.url);
+        const speciesData = await speciesResponse.json();
+        evolutions.push({
+          name: current.species.name,
+          url: speciesData.varieties[0].pokemon.url,
+          sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${speciesData.id}.png`,
+        });
+        current = current.evolves_to[0];
+      }
+      return evolutions.reverse();
+    },
+    async getNextEvolutions(chain, name) {
+      const evolutions = [];
+      let current = chain;
+      while (current && current.species.name !== name) {
+        current = current.evolves_to[0];
+      }
+      if (current) {
+        for (const evolution of current.evolves_to) {
+          const speciesResponse = await fetch(evolution.species.url);
+          const speciesData = await speciesResponse.json();
+          evolutions.push({
+            name: evolution.species.name,
+            url: speciesData.varieties[0].pokemon.url,
+            sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${speciesData.id}.png`,
+          });
+        }
+      }
+      return evolutions;
+    }
   },
+  components: {
+    HeaderInformation,
+    BaseStatistics,
+    SpecialAttacks,
+    Weaknesses,
+    Evolutions
+  }
 };
 </script>
 
@@ -131,6 +156,9 @@ export default {
   max-width: 800px;
   margin: 0 auto;
   border-radius: 0.5rem;
+  background-color: #2d3748;
+  padding: 2rem;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
 }
 
 .pokemon-details img {
@@ -138,7 +166,49 @@ export default {
   height: auto;
 }
 
+h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
 h2 {
-  margin-top: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.bg-blue-500 {
+  background-color: #3b82f6;
+}
+
+.bg-green-500 {
+  background-color: #10b981;
+}
+
+.bg-purple-500 {
+  background-color: #8b5cf6;
+}
+
+.bg-yellow-500 {
+  background-color: #f59e0b;
+}
+
+.text-black {
+  color: #000;
+}
+
+button {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  background-color: #3b82f6;
+  color: white;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: #2563eb;
 }
 </style>

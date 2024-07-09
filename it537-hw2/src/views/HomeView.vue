@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import { ref, onMounted } from 'vue';
+
 export default {
   data() {
     return {
@@ -48,7 +50,7 @@ export default {
     },
     getPokemonImageUrl(url) {
       const pokemonId = url.split('/')[6];
-      return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png`;
+      return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonId}.png`;
     },
     handleScroll() {
       if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
@@ -62,7 +64,8 @@ export default {
         this.fetchPokemon();
       }
     },
-    viewDetails(name) {
+    async viewDetails(name) {
+      this.isLoading = true;
       this.$router.push({ name: 'PokemonDetails', params: { name } });
     }
   }
@@ -70,76 +73,5 @@ export default {
 </script>
 
 <style scoped>
-.grid {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: 1em;
-}
-
-@media (min-width: 640px) {
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 768px) {
-  .grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (min-width: 1024px) {
-  .grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-.bg-white {
-  background-color: white;
-}
-
-.shadow {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.p-4 {
-  padding: 1rem;
-}
-
-.hover\:bg-gray-100:hover {
-  background-color: #f7fafc;
-}
-
-.transition {
-  transition: background-color 0.2s;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.mt-2 {
-  margin-top: 0.5rem;
-}
-
-.font-bold {
-  font-weight: bold;
-}
-
-.text-black {
-  color: black;
-}
-
-.w-full {
-  width: 100%;
-}
-
-.rounded-t-lg {
-  border-top-left-radius: 0.5rem;
-  border-top-right-radius: 0.5rem;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
 </style>
+
