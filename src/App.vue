@@ -7,7 +7,7 @@ import "./index.css";
 
 <template lang="pug">
 
-header(class="bg-gray-800 text-white  flex justify-between items-center px-10")
+header(class="bg-gray-800 bg-opacity-40 text-white  flex justify-between items-center px-10")
     .logo
         img(:src="logo" alt="Vue logo" width="70" height="50")
     nav(class="flex space-x-5") 
@@ -15,7 +15,7 @@ header(class="bg-gray-800 text-white  flex justify-between items-center px-10")
         RouterLink(to="/login") Login
 
 RouterView
-footer(class="bg-gray-800 text-white flex justify-center items-center p-5")
+footer(class="bg-gray-800 bg-opacity-40 text-white flex justify-center items-center p-5")
   p(class="text-sm") © 2024 Pokemon  - Hakan KARAYILMAZ
 
 </template>
