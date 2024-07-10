@@ -3,6 +3,8 @@ import { RouterLink, RouterView } from "vue-router";
 import logo from "./assets/pngegg.png";
 import "./assets/main.css";
 import "./index.css";
+
+console.log(process.env.VUE_APP_PROJECT_ID);
 </script>
 
 <template lang="pug">
