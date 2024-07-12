@@ -3,15 +3,13 @@ import { RouterLink, RouterView } from "vue-router";
 import logo from "./assets/pngegg.png";
 import "./assets/main.css";
 import "./index.css";
-
-console.log(process.env.VUE_APP_PROJECT_ID);
 </script>
 
 <template lang="pug">
 
 header(class="bg-gray-800 bg-opacity-40 text-white  flex justify-between items-center px-10")
-    .logo
-        img(:src="logo" alt="Vue logo" width="70" height="50")
+    div
+      img(:src="logo" alt="Vue logo" width="70" height="50")
     nav(class="flex space-x-5") 
         RouterLink(to="/") Home
         RouterLink(to="/login") Login
