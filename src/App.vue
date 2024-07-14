@@ -20,10 +20,10 @@ const handleClick = () => {
 
 <template lang="pug">
 
-header(class="bg-gray-800 bg-opacity-40 text-white  flex justify-between items-center px-10")
+header(class="bg-gray-800 bg-opacity-40 text-white  flex justify-between items-center px-3 md:px-10")
     div
       img(:src="logo" alt="Vue logo" width="70" height="50" class="cursor-pointer" @click="handleClick")
-    nav(class="flex space-x-5") 
+    nav(class="flex space-x-3 md:space-x-5") 
         RouterLink(to="/") Home
         RouterLink(v-if="!isSessionExist" to="/login") Login
         span(v-if="isSessionExist") Welcome

@@ -5,6 +5,7 @@ import { ref, onMounted, computed } from "vue";
 import { RouterLink, RouterView } from "vue-router";
 import _ from "lodash";
 import { getImageUrl } from "@/utils/utils";
+import Spinner from "@/components/Spinner.vue";
 
 const idParam = useRoute().params.id;
 const imageUrl = getImageUrl(parseInt(idParam as string));
@@ -19,12 +20,12 @@ onMounted(async () => {
 <template lang="pug">
 
 
-div(class="flex flex-col justify-center items-center p-10 h-[calc(100vh-130px)]")
+div(class="flex flex-col justify-center items-center p-10 min-h-[calc(100vh-130px)]")
   div(class=" p-5 w-full md:w-[400px] h-min-[500px] rounded-lg flex flex-col items-center transition duration-300 ease-in-out")
     div(class="flex flex-col items-center")
       div(class="flex justify-between w-full")
-        img(:src="imageUrl" alt="Vue logo" width="500" height="50" class="m-auto")
-      div(v-if="computedPokemon" class="flex flex-col [&>p]:text-white [&>p]:text-xl [&>p]:py-1 divide-y-2")
+        img(:src="imageUrl" alt="Vue logo" width="300" height="50" class="m-auto mb-3 max-md:w-[150px]")
+      div(v-if="computedPokemon" class="flex flex-col [&>p]:text-white [&>p]:text-xl [&>p]:max-md:text-sm [&>p]:py-1 divide-y-2")
         p
           span(class="font-bold") Name : 
           span {{  _.capitalize(pokemon?.name)  }}
@@ -41,7 +42,7 @@ div(class="flex flex-col justify-center items-center p-10 h-[calc(100vh-130px)]"
           span(class="font-bold") Types : 
           span(v-for="type in pokemon?.types") {{ _.capitalize(type.type.name)  }}
         p
-      div(v-else class="text-2xl text-white") Loading...
+      Spinner(v-else)
   RouterLink(to="/" class="mt-10 py-3 px-8 bg-opacity-25 bg-black text-white rounded-lg hover:bg-white hover:text-black cursor-pointer") Go Home
          
   
