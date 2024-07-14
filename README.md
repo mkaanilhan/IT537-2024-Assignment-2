@@ -1,9 +1,10 @@
+
 # Secreenshot
 
 Click for Live Demo here [Pokedex App](https://main--magenta-malabi-cec339.netlify.app/)
 
 <img src='src/assets/photo.png' />
-<br>
+
 # IT537 - Assignment 2
 
 You are responsible for creating pokedex app by using vue.js.
@@ -19,3 +20,5 @@ You are responsible for creating pokedex app by using vue.js.
 - Due date is 21.07.2024, 11.59 pm.
 - I will share my solution after the due date.
 - Your branch name must be following format IT537_<YOUR_SCHOOL_ID> eg. IT537_27404
+
+
