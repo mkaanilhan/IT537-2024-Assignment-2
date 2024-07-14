@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 import { getPokemon } from "@/service/service";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { RouterLink, RouterView } from "vue-router";
 import _ from "lodash";
 import { getImageUrl } from "@/utils/utils";
@@ -9,6 +9,7 @@ import { getImageUrl } from "@/utils/utils";
 const idParam = useRoute().params.id;
 const imageUrl = getImageUrl(parseInt(idParam as string));
 const pokemon = ref(null);
+const computedPokemon = computed(() => pokemon.value);
 
 onMounted(async () => {
   pokemon.value = await getPokemon(idParam as string);
@@ -23,8 +24,7 @@ div(class="flex flex-col justify-center items-center p-10 h-[calc(100vh-130px)]"
     div(class="flex flex-col items-center")
       div(class="flex justify-between w-full")
         img(:src="imageUrl" alt="Vue logo" width="500" height="50" class="m-auto")
-        
-      div(class="flex flex-col [&>p]:text-white [&>p]:text-xl [&>p]:py-1 divide-y-2")
+      div(v-if="computedPokemon" class="flex flex-col [&>p]:text-white [&>p]:text-xl [&>p]:py-1 divide-y-2")
         p
           span(class="font-bold") Name : 
           span {{  _.capitalize(pokemon?.name)  }}
@@ -41,6 +41,7 @@ div(class="flex flex-col justify-center items-center p-10 h-[calc(100vh-130px)]"
           span(class="font-bold") Types : 
           span(v-for="type in pokemon?.types") {{ _.capitalize(type.type.name)  }}
         p
+      div(v-else class="text-2xl text-white") Loading...
   RouterLink(to="/" class="mt-10 py-3 px-8 bg-opacity-25 bg-black text-white rounded-lg hover:bg-white hover:text-black cursor-pointer") Go Home
          
   
