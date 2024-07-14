@@ -41,7 +41,7 @@ div(class="flex flex-col justify-center items-center p-10 h-[calc(100vh-130px)]"
           span(class="font-bold") Types : 
           span(v-for="type in pokemon?.types") {{ _.capitalize(type.type.name)  }}
         p
-  RouterLink(to="/" class="mt-10 py-3 px-8 bg-opacity-25 bg-black text-white rounded-lg hover:bg-black cursor-pointer") Go Home
+  RouterLink(to="/" class="mt-10 py-3 px-8 bg-opacity-25 bg-black text-white rounded-lg hover:bg-white hover:text-black cursor-pointer") Go Home
          
   
 </template>
