@@ -7,7 +7,7 @@
             <span class="w-8 inline-block font-press-start text-sm mr-2">{{ getStatAbbr(stat.stat.name) }}</span>
             {{ stat.stat.name }}
           </span>
-          <span class="font-bold">{{ stat.base_stat }}</span>
+          <span class="font-bold">{{ stat.base_stat }}/255</span>
         </div>
         <div class="w-full bg-gray-200 rounded-full h-3">
           <div :class="['bg-gradient-to-r', getStatColor(stat.stat.name)]"
@@ -16,10 +16,15 @@
           </div>
         </div>
       </div>
+      <div class="mt-4 text-sm text-gray-600">
+        Highest base stat: {{ highestBaseStat }}/255
+      </div>
     </div>
   </template>
   
   <script>
+  import { computed } from 'vue';
+  
   export default {
     props: {
       stats: {
@@ -27,12 +32,15 @@
         required: true
       }
     },
-    setup() {
+    setup(props) {
       const getStatColor = (statName) => {
         const colors = {
           hp: 'from-red-500 to-red-600',
           attack: 'from-orange-500 to-orange-600',
-          // ... diğer statlar için renkler
+          defense: 'from-yellow-500 to-yellow-600',
+          'special-attack': 'from-blue-500 to-blue-600',
+          'special-defense': 'from-green-500 to-green-600',
+          speed: 'from-pink-500 to-pink-600'
         };
         return colors[statName.toLowerCase()] || 'from-gray-500 to-gray-600';
       };
@@ -41,14 +49,22 @@
         const abbrs = {
           hp: 'HP',
           attack: 'ATK',
-          // ... diğer statlar için kısaltmalar
+          defense: 'DEF',
+          'special-attack': 'SpA',
+          'special-defense': 'SpD',
+          speed: 'SPD'
         };
         return abbrs[statName.toLowerCase()] || statName.substring(0, 3).toUpperCase();
       };
   
+      const highestBaseStat = computed(() => {
+        return Math.max(...props.stats.map(stat => stat.base_stat));
+      });
+  
       return {
         getStatColor,
-        getStatAbbr
+        getStatAbbr,
+        highestBaseStat
       };
     }
   }
