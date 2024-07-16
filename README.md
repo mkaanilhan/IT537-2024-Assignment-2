@@ -1,7 +1,7 @@
 
 # IT537 - Assignment 2
 
-You are responsible for creating pokedex app by using vue.js.
+You are responsible for creating pokedex app by using vue.js.TEST
 
 - https://pokeapi.co is the api-source.
 - You can check the similar project -> https://github.com/skydoves/Pokedex
