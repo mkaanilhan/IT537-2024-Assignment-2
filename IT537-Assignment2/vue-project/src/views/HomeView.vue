@@ -69,7 +69,7 @@ export default {
     };
 
     const goToPokemonDetail = (name) => {
-      router.push({ name: 'PokemonDetail', params: { name } });
+      router.push({ name: 'PokemonDetails', params: { name } });
     };
 
     onMounted(() => {
