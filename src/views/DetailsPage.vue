@@ -99,7 +99,7 @@ export default {
           steel: '#B7B7CE',
           fairy: '#D685AD'
         }
-        const color = typeColors[type] || '#A8A77A'; // Default to normal type color if not found
+        const color = typeColors[type] || '#A8A77A'; 
        
         function   hexToRgba(hex, alpha) {
           const bigint = parseInt(hex.slice(1), 16);
