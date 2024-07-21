@@ -10,6 +10,9 @@ export const usePokemonDetailStore = defineStore('pokemonDetail', {
   actions:{
     add(pokemonDetail){
       this.pokemonDetailList.push(pokemonDetail)
+    },
+    removeAllList(){
+      this.pokemonDetailList=[]
     }
     /*remove(pizza){
       const index = this.basketList.findIndex((element) => element.id===pizza.id)

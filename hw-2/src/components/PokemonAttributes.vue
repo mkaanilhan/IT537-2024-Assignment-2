@@ -1,5 +1,7 @@
 <script>
-import { computed } from 'vue'
+import {
+    computed
+} from 'vue'
 import {
     usePokemonDetailStore
 } from "../stores/pokemonDetails.js"
@@ -20,11 +22,12 @@ export default {
         },
 
     },
+    
     async mounted() {
 
-            const responsePa = await fetch(this.pokemonBaseInfo.url)
-            this.pokemonInfo  = await responsePa.json()
-            
+        const responsePa = await fetch(this.pokemonBaseInfo.url)
+        this.pokemonInfo = await responsePa.json()
+
     }
 }
 </script>
@@ -55,14 +58,14 @@ export default {
     </div>
     <div class="flex justify-start">
         <div class="border border-black mt-2 w-3/5 h-96 ml-2">
-        <div v-for="(stat, index) in this.pokemonInfo.stats" :key="index">
-            {{stat.stat.name}} : {{stat.base_stat}}
-        </div>
+            <div v-for="(stat, index) in this.pokemonInfo.stats" :key="index">
+                {{stat.stat.name}} : {{stat.base_stat}}
+            </div>
         </div>
         <div class="border border-black mt-2 w-2/5 h-96 ml-2 mr-2">
-        <div>
-           Weight: {{pokemonInfo.weight}} -- Height: {{pokemonInfo.height}}
-        </div>
+            <div>
+                Weight: {{pokemonInfo.weight}} -- Height: {{pokemonInfo.height}}
+            </div>
         </div>
     </div>
 </div>

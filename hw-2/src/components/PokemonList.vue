@@ -57,7 +57,7 @@ export default {
 
 <div class="border border-black-2 p-2">
     <div class="grid grid-cols-5 grid-flow-row">
-
+            {{this.store.removeAllList()}}
         <div v-for="(pokemonItem, index) in pokemonList" :key="index" class="mx-auto p-2">
             <PokemonCard :pokemon="pokemonItem" :pokemonId="index+1" />
             {{store.add(pokemonItem)}}
