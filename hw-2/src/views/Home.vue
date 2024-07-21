@@ -7,7 +7,6 @@ export default {
 
             test: null
 
-
         }
     },
     components: {
@@ -17,19 +16,16 @@ export default {
 }
 </script>
 <template>
-<div class='container mx-auto w-640 my-4 p-2'>
+<div>
 
+<div class="mx-auto w-640 my-4 p-2">
     <HomeHeader />
-
 </div>
 
-<div class="grid grid-cols-4">
-
+<div class="mx-auto w-640 my-4 p-2">
     <PokemonList />
-
 </div>
 
-
-
+</div>
 
 </template>

@@ -1,46 +1,71 @@
 <script>
+import {
+    usePokemonDetailStore
+} from "../stores/pokemonDetails.js"
 import PokemonCard from "../components/PokemonCard.vue"
 export default {
     data() {
+
         return {
             pokemonList: [],
-            nextUrl:"",
-            previousUrl:""
+            defaultPage: {
+                url: "https://pokeapi.co/api/v2/pokemon?limit=20&offset=0",
+                state: true
+            },
+            store: usePokemonDetailStore(),
+            nextUrl: "",
+            nextPokemonList: []
         }
     },
+
     components: {
         PokemonCard,
+
     },
     methods: {
+        async fetchPokemons() {
+            const response = await fetch(this.defaultPage.url)
+            this.defaultPage.state = false
+            const res = await response.json()
+            this.pokemonList = res.results
+            this.nextUrl = res.next
 
+        },
+        async fetchMorePokemons() {
+            const responseMore = await fetch(this.nextUrl)
+            const resMore = await responseMore.json()
+            this.nextUrl = resMore.next
+            this.nextPokemonList = resMore.results
+            for (let index = 0; index < this.nextPokemonList.length; index++) {
+                const nextPokemon = this.nextPokemonList[index];
+                this.addMorePokemons(nextPokemon)
+            }
+
+        },
+        addMorePokemons(pokemonInfo) {
+            this.pokemonList.push(pokemonInfo)
+        }
     },
-    async created() {
-
-        const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=20&offset=10')
-        const res = await response.json()
-        const pokemonData = await res.results
-        this.pokemonList = pokemonData
-        this.nextUrl = res.next
-        this.previousUrl = res.previous
-    }
+    created() {
+        this.fetchPokemons()
+    },
 }
 </script>
 
 <template>
+<div>
 
-<div v-for="(pokemonItem, index) in pokemonList" class="p-4">
-    <PokemonCard :pokemonName='pokemonItem.name' :pokemonId="index+1" />
+<div class="border border-black-2 p-2">
+    <div class="grid grid-cols-5 grid-flow-row">
+
+        <div v-for="(pokemonItem, index) in pokemonList" :key="index" class="mx-auto p-2">
+            <PokemonCard :pokemon="pokemonItem" :pokemonId="index+1" />
+            {{store.add(pokemonItem)}}
+        </div>
+
+    </div>
 </div>
-
-<div class="container flex justify-between gap-4 mx-auto">
-
-    <button class="p-4 bg-gray-400 rounded-lg mx-auto">
-    Previous --{{previousUrl}}
-    </button>
-    <button class="p-4 bg-gray-400 rounded-lg mx-auto">
-    Next -- {{nextUrl}}
-    </button>
-
+    <button class="p-2 bg-gray-400 rounded-lg text-white hover:bg-orange-500 mx-2 my-2" @click="fetchMorePokemons()">Load more</button>
 </div>
 
 </template>
