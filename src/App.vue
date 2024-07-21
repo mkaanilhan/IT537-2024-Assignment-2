@@ -1,4 +1,5 @@
 <script>
+import { RouterLink, RouterView } from 'vue-router'
 
 
 </script>
@@ -11,6 +12,10 @@
   <header class="bg-blue-300 w-full">
     POKEMON
   </header>
+
+  <RouterView>
+    
+  </RouterView>
 
 
   <footer class="bg-blue-300 w-full text-center">
