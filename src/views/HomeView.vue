@@ -12,10 +12,9 @@ export default {
   },
   methods: {
     fetchPokemons() {
-      fetch(`https://pokeapi.co/api/v2/pokemon?limit=100&offset=${this.offset}`)
+      fetch(`https://pokeapi.co/api/v2/pokemon?limit=50&offset=${this.offset}`)
         .then((res) => res.json())
         .then((res) => (this.pokemons = [...this.pokemons, ...res.results]))
-        .then((res) => console.log(res))
         .catch((err) => console.log(err));
     },
     handleclick() {
