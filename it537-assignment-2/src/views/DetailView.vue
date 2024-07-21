@@ -1,24 +1,30 @@
 <template>
-  <div class="pokemon-details bg-gray-800 text-white min-h-screen p-6 rounded-lg shadow-md mx-auto max-w-4xl">
+  <div class="pokemon-details bg-white text-gray-900 min-h-screen p-8 mx-auto max-w-4xl">
     <template v-if="isLoading">
       <p class="text-center text-xl font-semibold">Loading...</p>
     </template>
     <template v-else>
       <div class="flex flex-col md:flex-row md:items-center">
         <div class="flex-shrink-0">
-          <img :src="pokemon.imageUrl" :alt="pokemon.name" class="w-64 h-64 mx-auto md:mx-0">
+          <img :src="pokemon.imageUrl" :alt="pokemon.name" class="w-64 h-64 mx-auto md:mx-0 rounded-lg shadow-md">
         </div>
-        <div class="mt-4 md:mt-0 md:ml-6">
-          <h1 class="text-5xl font-bold mb-4 capitalize">{{ pokemon.name }}</h1>
-          <p class="text-lg">{{ getFlavorText(pokemon.species.flavor_text_entries) }}</p>
+        <div class="mt-4 md:mt-0 md:ml-8">
+          <h1 class="text-4xl font-extrabold mb-4 capitalize text-blue-600">{{ pokemon.name }}</h1>
+          <p class="text-lg text-gray-700">{{ getFlavorText(pokemon.species.flavor_text_entries) }}</p>
+          <div class="mt-4">
+            <p class="text-lg"><span class="font-semibold">Height:</span> {{ pokemon.height }}</p>
+            <p class="text-lg"><span class="font-semibold">Weight:</span> {{ pokemon.weight }}</p>
+          </div>
         </div>
       </div>
-      <BaseStatistics :pokemon="pokemon" />
-      <SpecialAttacks :pokemon="pokemon" />
-      <Weaknesses :pokemon="pokemon" />
-      <Evolutions :pokemon="pokemon" />
-      <div class="mt-6">
-        <button @click="goHome" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 transition">Back to Home</button>
+      <div class="mt-8">
+        <BaseStatistics :pokemon="pokemon" />
+        <SpecialAttacks :pokemon="pokemon" class="special-attacks-list mt-4"/>
+        <Weaknesses :pokemon="pokemon" />
+        <Evolutions :pokemon="pokemon" />
+      </div>
+      <div class="mt-8 text-center">
+        <button @click="goHome" class="bg-green-500 text-white py-2 px-6 rounded-lg shadow hover:bg-green-700 transition">Back to Home</button>
       </div>
     </template>
   </div>
@@ -155,62 +161,56 @@ export default {
 .pokemon-details {
   max-width: 800px;
   margin: 0 auto;
-  border-radius: 0.5rem;
-  background-color: #2d3748;
+  background-color: #ffffff;
   padding: 2rem;
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
 }
 
 .pokemon-details img {
   max-width: 100%;
   height: auto;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
   font-size: 2.5rem;
-  font-weight: bold;
+  font-weight: 800;
   margin-bottom: 1rem;
 }
 
 h2 {
   font-size: 1.5rem;
-  font-weight: bold;
+  font-weight: 700;
   margin-bottom: 0.5rem;
-}
-
-.bg-blue-500 {
-  background-color: #3b82f6;
 }
 
 .bg-green-500 {
   background-color: #10b981;
 }
 
-.bg-purple-500 {
-  background-color: #8b5cf6;
+.text-gray-900 {
+  color: #1a202c;
 }
 
-.bg-yellow-500 {
-  background-color: #f59e0b;
-}
-
-.text-black {
-  color: #000;
+.text-gray-700 {
+  color: #4a5568;
 }
 
 button {
   display: inline-block;
-  padding: 0.5rem 1rem;
-  border-radius: 0.25rem;
-  background-color: #3b82f6;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  background-color: #10b981;
   color: white;
   font-weight: bold;
   transition: background-color 0.2s;
 }
 
 button:hover {
-  background-color: #2563eb;
+  background-color: #059669;
+}
+
+.special-attacks-list p {
+  margin-bottom: 0.5rem;
 }
 </style>
-
-

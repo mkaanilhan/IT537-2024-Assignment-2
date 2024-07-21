@@ -16,6 +16,4 @@
 import { RouterView } from 'vue-router';
 </script>
 
-<style>
 /* You can add any global styles here */
-</style>
