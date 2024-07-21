@@ -26,25 +26,16 @@ mounted(){
     this.fetchPokemons()
 }
 
-
 }
-
 
 </script>
 
 <template>
 
-  <div class="max-w-[1200px] grid grid-cols-4 gap-3">
+  <div class="max-w-[1200px] grid grid-cols-4 gap-5 py-5">
     <PokemonCard v-for="(pokemon, index) in pokemons" :key="index":pokemon="pokemon"/>
 
   </div>
-
-
-   
-
-
-
-
 
 
 </template>
